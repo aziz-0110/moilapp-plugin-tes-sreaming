@@ -327,8 +327,8 @@ class Controller(QtWidgets.QWidget):
             self.setup_anypoint_view(self.model_apps_anypoint, self.ui.label_3)
 
             # Setup and start processing for fisheye
-            self.setup_model_apps(self.model_apps_fisheye, s_type, cam_type, m_sou, p_nm)
-            self.setup_fisheye_view(self.model_apps_fisheye, self.ui.label_4)
+            # self.setup_model_apps(self.model_apps_fisheye, s_type, cam_type, m_sou, p_nm)
+            # self.setup_fisheye_view(self.model_apps_fisheye, self.ui.label_4)
 
     def setup_model_apps(self, model_apps, s_type, cam_type, m_sou, p_nm):
         model_apps.update_file_config()
@@ -345,13 +345,15 @@ class Controller(QtWidgets.QWidget):
         print("Panorama view setup complete")
 
     def setup_anypoint_view(self, model_apps, label):
+        model_apps.signal_image_original.connect(lambda img: self.update_label_image(self.ui.label_4, img, 600, False))
+
         model_apps.state_recent_view = "AnypointView"
         model_apps.change_anypoint_mode = "mode_2"
         model_apps.set_draw_polygon = False
         model_apps.create_maps_anypoint_mode_2()
 
         model_apps.image_result.connect(lambda img: self.update_label_image(label, img, 600, False))
-        print("Anypoint view setup complete")
+        print("Anypoint and Fisheye view setup complete")
 
     def setup_fisheye_view(self, model_apps, label):
         # model_apps.state_recent_view = "FisheyeView"
